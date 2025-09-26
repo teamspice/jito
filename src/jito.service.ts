@@ -73,8 +73,29 @@ export interface FeeRecommendation {
 
 export interface SimulateBundleParams {
   encodedTransactions: string[];
+  simulationBank?: string;
   skipSigVerify?: boolean;
   replaceRecentBlockhash?: boolean;
+  accounts?: {
+    addresses: string[];
+    encoding: 'base58' | 'base64' | 'base64+zstd' | 'jsonParsed';
+  };
+  preExecutionAccountsConfigs?: Array<{
+    accountIndex: number;
+    addresses: string[];
+  } | null>;
+  postExecutionAccountsConfigs?: Array<{
+    accountIndex: number;
+    addresses: string[];
+  } | null>;
+}
+
+export interface AccountInfo {
+  lamports: number;
+  owner: string;
+  data: string;
+  executable: boolean;
+  rentEpoch: number;
 }
 
 export interface SimulateBundleResponse {
@@ -86,8 +107,14 @@ export interface SimulateBundleResponse {
       slot: number;
     };
     err: any | null;
-    logs?: string[][];
+    logs?: string[] | null;
+    preExecutionAccounts?: Array<AccountInfo | null>;
+    postExecutionAccounts?: Array<AccountInfo | null>;
     unitsConsumed?: number;
+    returnData?: {
+      programId: string;
+      data: string;
+    } | null;
   };
   error?: {
     code: number;
@@ -195,7 +222,15 @@ export class JitoService extends JitoJsonRpcClient {
     params: SimulateBundleParams,
     rpcEndpoint?: string,
   ): Promise<SimulateBundleResponse> {
-    const { encodedTransactions, skipSigVerify = false, replaceRecentBlockhash = false } = params;
+    const {
+      encodedTransactions,
+      simulationBank,
+      skipSigVerify = false,
+      replaceRecentBlockhash = false,
+      accounts,
+      preExecutionAccountsConfigs,
+      postExecutionAccountsConfigs
+    } = params;
 
     // Use provided RPC endpoint or throw error if not provided
     if (!rpcEndpoint) {
@@ -211,8 +246,12 @@ export class JitoService extends JitoJsonRpcClient {
       params: [
         {
           encodedTransactions,
+          ...(simulationBank && { simulationBank }),
           skipSigVerify,
-          replaceRecentBlockhash
+          replaceRecentBlockhash,
+          ...(accounts && { accounts }),
+          ...(preExecutionAccountsConfigs && { preExecutionAccountsConfigs }),
+          ...(postExecutionAccountsConfigs && { postExecutionAccountsConfigs })
         }
       ]
     };

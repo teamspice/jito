@@ -171,10 +171,7 @@ async function testBundle(): Promise<void> {
       console.error("❌ Bundle simulation failed:", simulationResult.result.err);
       if (simulationResult.result.logs) {
         console.log("\nSimulation logs:");
-        simulationResult.result.logs.forEach((txLogs, index) => {
-          console.log(`\nTransaction ${index + 1} logs:`);
-          txLogs.forEach(log => console.log(`  ${log}`));
-        });
+        simulationResult.result.logs.forEach(log => console.log(`  ${log}`));
       }
       return;
     }
@@ -185,10 +182,7 @@ async function testBundle(): Promise<void> {
 
     if (simulationResult.result?.logs) {
       console.log("\nSimulation logs:");
-      simulationResult.result.logs.forEach((txLogs, index) => {
-        console.log(`\nTransaction ${index + 1} logs:`);
-        txLogs.forEach(log => console.log(`  ${log}`));
-      });
+      simulationResult.result.logs.forEach(log => console.log(`  ${log}`));
     }
 
     console.log("\n📤 Sending bundle with 2 transactions...");

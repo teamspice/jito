@@ -114,8 +114,45 @@ Simulate a bundle before execution to validate transactions. **Note: Currently o
 ```typescript
 interface SimulateBundleParams {
   encodedTransactions: string[];
+  simulationBank?: string;
   skipSigVerify?: boolean;
   replaceRecentBlockhash?: boolean;
+  accounts?: {
+    addresses: string[];
+    encoding: 'base58' | 'base64' | 'base64+zstd' | 'jsonParsed';
+  };
+  preExecutionAccountsConfigs?: Array<{
+    accountIndex: number;
+    addresses: string[];
+  } | null>;
+  postExecutionAccountsConfigs?: Array<{
+    accountIndex: number;
+    addresses: string[];
+  } | null>;
+}
+
+interface SimulateBundleResponse {
+  jsonrpc: string;
+  id: string;
+  result?: {
+    context: {
+      apiVersion: string;
+      slot: number;
+    };
+    err: any | null;
+    logs?: string[] | null;
+    preExecutionAccounts?: Array<AccountInfo | null>;
+    postExecutionAccounts?: Array<AccountInfo | null>;
+    unitsConsumed?: number;
+    returnData?: {
+      programId: string;
+      data: string;
+    } | null;
+  };
+  error?: {
+    code: number;
+    message: string;
+  };
 }
 ```
 
@@ -222,15 +259,27 @@ async function submitBundleWithSimulation() {
   const simulationResult = await jito.simulateBundle({
     encodedTransactions: [encodedTx1, encodedTx2],
     skipSigVerify: false,
-    replaceRecentBlockhash: false
+    replaceRecentBlockhash: false,
+    // Optional: Monitor specific accounts
+    // accounts: {
+    //   addresses: ['YourAccountPubkey'],
+    //   encoding: 'base64'
+    // }
   }, rpcEndpoint);
 
   if (simulationResult.result?.err) {
     console.error('Simulation failed:', simulationResult.result.err);
+    if (simulationResult.result.logs) {
+      console.log('Logs:', simulationResult.result.logs);
+    }
     return;
   }
 
-  console.log('Simulation successful! Units consumed:', simulationResult.result?.unitsConsumed);
+  console.log('Simulation successful!');
+  console.log('Units consumed:', simulationResult.result?.unitsConsumed);
+  if (simulationResult.result?.logs) {
+    console.log('Logs:', simulationResult.result.logs);
+  }
 
   // Send bundle
   const result = await jito.sendBundle([
