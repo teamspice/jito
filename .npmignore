@@ -1,0 +1,33 @@
+# Source files
+src/
+scripts/
+
+# Config files
+tsconfig.json
+.env
+.env.*
+
+# Development files
+*.log
+*.tsbuildinfo
+.DS_Store
+
+# Test files
+test/
+tests/
+**/*.test.ts
+**/*.spec.ts
+
+# Git
+.git/
+.gitignore
+
+# Editor
+.vscode/
+.idea/
+
+# Dependencies
+node_modules/
+pnpm-lock.yaml
+yarn.lock
+package-lock.json

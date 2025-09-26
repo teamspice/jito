@@ -1,0 +1,40 @@
+{
+  "name": "@slateos/jito",
+  "version": "0.2.4",
+  "description": "TypeScript framework for Jito JSON-RPC on Solana",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*",
+    "src/**/*",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build",
+    "test:fees": "tsx scripts/test-fees.ts",
+    "test:tx": "tsx scripts/test-tx.ts",
+    "test:bundle": "tsx scripts/test-bundle.ts"
+  },
+  "keywords": [
+    "jito",
+    "solana",
+    "mev"
+  ],
+  "author": "@Aelix",
+  "license": "MIT",
+  "devDependencies": {
+    "@solana/spl-memo": "^0.2.5",
+    "@solana/web3.js": "^1.98.4",
+    "@types/node": "^20.0.0",
+    "dotenv": "^17.2.2",
+    "ts-node": "^10.9.1",
+    "tsx": "^4.20.5",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "jito-js-rpc": "^0.2.2"
+  }
+}
