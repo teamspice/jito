@@ -33,7 +33,7 @@ async function testTransaction(): Promise<void> {
   );
 
   // Read wallet from local path (wallet.json at frameworks root)
-  const walletPath = "../wallet.json";
+  const walletPath = "./wallet.json";
 
   if (!fs.existsSync(walletPath)) {
     console.error("Wallet file not found. Please update path.");
