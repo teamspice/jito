@@ -11,6 +11,7 @@ tsconfig.json
 *.log
 *.tsbuildinfo
 .DS_Store
+wallet.json
 
 # Test files
 test/
