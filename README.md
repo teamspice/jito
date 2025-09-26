@@ -4,6 +4,10 @@ TypeScript SDK for building Solana MEV bots and high-priority applications with 
 
 A clean, type-safe wrapper around Jito's Low Latency Transaction Send API with automatic fee optimization and bundle simulation.
 
+## Repository
+
+https://github.com/teamspice/jito
+
 ## Installation
 
 ```bash
@@ -13,6 +17,13 @@ yarn add @slateos/jito
 # or
 pnpm add @slateos/jito
 ```
+
+## Setup
+
+To run the scripts from this repository:
+
+1. Create a `.env` file from `.env.example`
+2. Add a wallet file named `wallet.json` in the root directory
 
 ## Why @slateos/jito?
 
